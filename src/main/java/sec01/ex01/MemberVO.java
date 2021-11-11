@@ -71,7 +71,7 @@ public class MemberVO {
 
 
 	
-	public MemberVO(String id, String pwd, String name, String email) {
+	public MemberVO(String id, String pw, String name, String email) {
 		super();
 		this.id = id;
 		this.pw = pw;
@@ -81,7 +81,7 @@ public class MemberVO {
 
 
 
-	public MemberVO(String id, String pwd, String name, String email, Date joinDate) {
+	public MemberVO(String id, String pw, String name, String email, Date joinDate) {
 		super();
 		this.id = id;
 		this.pw = pw;
@@ -89,6 +89,6 @@ public class MemberVO {
 		this.email = email;
 		this.joinDate = joinDate;
 	}
-	}
+
 
 }

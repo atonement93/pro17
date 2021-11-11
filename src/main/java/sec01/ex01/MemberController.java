@@ -1,6 +1,9 @@
 package sec01.ex01;
 
 import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/mem.do")
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	MemberDAO memberDAO;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -22,12 +26,20 @@ public class MemberController extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    public void init() {
+    	memberDAO = new MemberDAO();
+    }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		
+		List<MemberVO> membersList = memberDAO.listMembers();
+		request.setAttribute("membersList", membersList);
+		RequestDispatcher dispatch = request.getRequestDispatcher("/test01/listMembers.jsp");
+		dispatch.forward(request, response);
 	}
 
 	/**
