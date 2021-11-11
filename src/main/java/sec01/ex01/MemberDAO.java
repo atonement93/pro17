@@ -12,6 +12,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import sec02.ex01.MemberVO;
+
 public class MemberDAO {
 	
 	Context ctx;
@@ -68,6 +70,35 @@ public class MemberDAO {
 		}
 	
 		return membersList;
+	}
+	
+	public void addMember(MemberVO memberVO) {
+		try {
+			con = dataFactory.getConnection();
+			
+			String id = memberVO.getId();
+			String pw = memberVO.getPw();
+			String name = memberVO.getName();
+			String email = memberVO.getEmail();
+			
+			String query = "insert into t_member(id, pw, name, email)" + " values(?, ?, ?, ?)";
+			
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			pstmt.setString(3, name);
+			pstmt.setString(4, email);
+
+			pstmt.executeUpdate();
+
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

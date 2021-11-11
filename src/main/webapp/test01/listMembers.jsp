@@ -53,8 +53,10 @@
 		</c:choose>	
 	</table>
 	
-	<a href="#">
-		<p class="cls2">회원가입</p>
+	<button class="cls2">
+	<a href="http://localhost:8090/pro17/member/memberForm.do">
+	회원가입
 	</a>
+	</button>
 </body>
 </html>

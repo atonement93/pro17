@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sec02.ex01.MemberVO;
+
 /**
  * Servlet implementation class MemberController
  */
-@WebServlet("/mem.do")
+@WebServlet("/member/*")
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	MemberDAO memberDAO;
@@ -33,12 +35,41 @@ public class MemberController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("컨트롤러 도착");
+    	String nextPage = null;
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		String uri = request.getRequestURI();
+		int index = uri.lastIndexOf("/");
 		
-		List<MemberVO> membersList = memberDAO.listMembers();
-		request.setAttribute("membersList", membersList);
-		RequestDispatcher dispatch = request.getRequestDispatcher("/test01/listMembers.jsp");
+		String path=uri.substring(index);
+		
+		if (path == null || (path.equals("/listMembers.do"))) {
+			System.out.println(path);
+			List<MemberVO> membersList = memberDAO.listMembers();
+			request.setAttribute("membersList", membersList);
+			nextPage = "/test01/listMembers.jsp";
+			
+		}else if(path.equals("/addMembers.do")) {
+			String id = request.getParameter("id");
+			String pw = request.getParameter("pw");
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			
+			MemberVO memberVO = new MemberVO(id, pw, name, email);
+			memberDAO.addMember(memberVO);
+			nextPage="/test01/listMembers.jsp";
+			
+		}else if (path.equals("/memberForm.do")) {
+			nextPage="/test01/memberForm.jsp";
+			
+		}else {
+			List<MemberVO> membersList = memberDAO.listMembers();
+			request.setAttribute("membersList", membersList);
+			nextPage = "/test01/listMembers.jsp";
+		}
+		
+		RequestDispatcher dispatch = request.getRequestDispatcher(nextPage);
 		dispatch.forward(request, response);
 	}
 
